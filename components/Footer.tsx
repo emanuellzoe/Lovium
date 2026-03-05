@@ -9,13 +9,13 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="px-6 md:px-[60px] py-[60px] border-t border-white/[0.06] flex items-center justify-between flex-wrap gap-5">
-      <div className="font-serif text-2xl font-bold text-white">
-        <span className="text-crimson-glow">{SITE_NAME[0]}</span>
-        {SITE_NAME.slice(1)}
+    <footer className="px-4 sm:px-6 md:px-[60px] py-10 sm:py-[72px] border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 text-center sm:text-left">
+      <div className="font-serif text-xl sm:text-2xl font-bold text-white">
+        {SITE_NAME.slice(0, -1)}
+        <span className="text-crimson-glow">{SITE_NAME.slice(-1)}</span>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex gap-6 sm:gap-10 flex-wrap justify-center">
         {FOOTER_LINKS.map((link) => (
           <a
             key={link.label}

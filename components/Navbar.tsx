@@ -25,25 +25,18 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-[500] flex items-center justify-between px-6 md:px-[60px] transition-all duration-400 ${
+      className={`fixed top-0 left-0 right-0 z-[500] flex items-center justify-between px-4 sm:px-6 md:px-[60px] transition-all duration-400 ${
         scrolled
-          ? "py-3.5 bg-[rgba(13,6,8,0.92)] backdrop-blur-[20px] border-b border-[rgba(192,57,43,0.2)]"
-          : "py-5"
+          ? "py-3 sm:py-3.5 bg-[rgba(13,6,8,0.92)] backdrop-blur-[20px] border-b border-[rgba(192,57,43,0.2)]"
+          : "py-4 sm:py-5"
       }`}
     >
       <a
         href="#"
-        className="font-serif text-[28px] font-bold text-white tracking-[2px] no-underline"
+        className="font-serif text-xl sm:text-[28px] font-bold text-white tracking-[2px] no-underline"
       >
-        {SITE_NAME.split("").map((char, i) =>
-          i === 0 ? (
-            <span key={i} className="text-crimson-glow">
-              {char}
-            </span>
-          ) : (
-            <span key={i}>{char}</span>
-          )
-        )}
+        {SITE_NAME.slice(0, -1)}
+        <span className="text-crimson-glow">{SITE_NAME.slice(-1)}</span>
       </a>
 
       {/* Desktop */}
@@ -61,7 +54,7 @@ export default function Navbar() {
         <li>
           <motion.a
             href="#"
-            className="bg-crimson text-white px-6 py-2.5 rounded-md text-sm font-semibold no-underline"
+            className="bg-crimson text-white px-6 py-2.5 rounded-md text-sm font-semibold no-underline inline-block"
             whileHover={{ backgroundColor: "#E74C3C", y: -1 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -73,7 +66,8 @@ export default function Navbar() {
       {/* Mobile Toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="md:hidden text-white text-2xl bg-transparent border-none"
+        className="md:hidden text-white text-2xl bg-transparent border-none p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
+        aria-label="Menu"
       >
         {mobileOpen ? "✕" : "☰"}
       </button>
@@ -93,7 +87,7 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="text-muted no-underline text-base font-medium hover:text-white transition-colors"
+                    className="text-muted no-underline text-lg font-medium hover:text-white transition-colors py-2 px-4 inline-block"
                   >
                     {link.label}
                   </a>
@@ -102,7 +96,8 @@ export default function Navbar() {
               <li>
                 <a
                   href="#"
-                  className="bg-crimson text-white px-6 py-2.5 rounded-md text-sm font-semibold no-underline"
+                  onClick={() => setMobileOpen(false)}
+                  className="bg-crimson text-white px-8 py-3 rounded-md text-base font-semibold no-underline inline-block"
                 >
                   Mulai Gratis
                 </a>

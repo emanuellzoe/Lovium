@@ -6,8 +6,8 @@ import { STEPS } from "@/lib/constants";
 
 export default function HowItWorks() {
   return (
-    <div id="cara-kerja" className="py-[120px] overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-[60px]">
+    <div id="cara-kerja" className="py-24 sm:py-[128px] overflow-hidden">
+      <div className="section-inner">
         <SectionHeader
           eyebrow="Cara Kerja"
           title={
@@ -20,7 +20,7 @@ export default function HowItWorks() {
           center
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0.5 mt-20 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-12 sm:mt-20 relative gap-4 lg:gap-[2px]">
           {/* Connection line */}
           <div className="absolute top-[60px] left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-crimson to-transparent opacity-30 hidden lg:block" />
 
@@ -36,16 +36,29 @@ export default function HowItWorks() {
                 ease: [0.16, 1, 0.3, 1],
               }}
               whileHover={{ y: -4, background: "rgba(192,57,43,0.08)" }}
-              className="p-7 md:p-10 relative text-center bg-white/[0.02] border border-white/5 transition-all duration-300"
+              className="relative text-center transition-all duration-300 py-10 px-7 sm:px-[28px]"
+              style={{
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.05)",
+              }}
             >
-              <div className="w-12 h-12 rounded-full bg-crimson flex items-center justify-center font-serif text-xl font-bold mx-auto mb-6 relative z-2 shadow-[0_0_0_8px_rgba(192,57,43,0.1)]">
+              <div
+                className="rounded-full bg-crimson flex items-center justify-center font-serif font-bold relative z-[2]"
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  fontSize: "20px",
+                  margin: "0 auto 24px",
+                  boxShadow: "0 0 0 8px rgba(192,57,43,0.1)",
+                }}
+              >
                 {i + 1}
               </div>
-              <div className="text-[28px] mb-4">{step.icon}</div>
-              <div className="font-serif text-[22px] font-semibold mb-2.5">
+              <div style={{ fontSize: "28px", marginBottom: "16px" }}>{step.icon}</div>
+              <div className="font-serif font-semibold" style={{ fontSize: "22px", marginBottom: "10px" }}>
                 {step.title}
               </div>
-              <div className="text-sm text-muted leading-relaxed">
+              <div className="text-muted" style={{ fontSize: "14px", lineHeight: "1.6" }}>
                 {step.desc}
               </div>
             </motion.div>

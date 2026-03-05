@@ -18,13 +18,13 @@ export default function Button({
   onClick,
 }: ButtonProps) {
   const base =
-    "inline-block rounded-lg font-semibold text-[15px] transition-all duration-300 relative overflow-hidden";
+    "inline-block rounded-lg text-[15px] no-underline transition-all duration-300 relative overflow-hidden text-center";
 
   const variants = {
     primary:
-      "bg-crimson text-white px-9 py-4 hover:bg-crimson-bright hover:shadow-[0_12px_40px_rgba(192,57,43,0.4)]",
+      "bg-crimson text-white px-7 sm:px-9 py-3.5 sm:py-4 font-semibold hover:bg-crimson-bright hover:shadow-[0_12px_40px_rgba(192,57,43,0.4)]",
     secondary:
-      "text-muted px-9 py-4 border border-white/10 hover:text-white hover:border-white/30",
+      "text-muted px-7 sm:px-9 py-3.5 sm:py-4 font-medium border border-white/10 hover:text-white hover:border-white/30",
   };
 
   return (
@@ -36,7 +36,7 @@ export default function Button({
       whileTap={{ scale: 0.97 }}
     >
       {variant === "primary" && (
-        <span className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+        <span className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       )}
       <span className="relative z-[1]">{children}</span>
     </motion.a>
