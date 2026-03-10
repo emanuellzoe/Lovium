@@ -53,7 +53,7 @@ export default function Navbar() {
         ))}
         <li>
           <motion.a
-            href="#"
+            href="/login"
             className="bg-crimson text-white px-6 py-2.5 rounded-md text-sm font-semibold no-underline inline-block"
             whileHover={{ backgroundColor: "#E74C3C", y: -1 }}
             whileTap={{ scale: 0.97 }}
@@ -95,7 +95,7 @@ export default function Navbar() {
               ))}
               <li>
                 <a
-                  href="#"
+                  href="/login"
                   onClick={() => setMobileOpen(false)}
                   className="bg-crimson text-white px-8 py-3 rounded-md text-base font-semibold no-underline inline-block"
                 >
