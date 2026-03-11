@@ -76,7 +76,7 @@ export default async function DashboardPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-3">
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full ${
                         agent.rarity === "legendary"
@@ -98,6 +98,12 @@ export default async function DashboardPage() {
                           : "Single"}
                     </span>
                   </div>
+                  <a
+                    href={`/chat/${agent.id}`}
+                    className="block w-full text-center text-xs py-1.5 rounded-lg bg-crimson/10 hover:bg-crimson/20 text-crimson-bright border border-crimson/20 hover:border-crimson/40 transition-colors no-underline"
+                  >
+                    💬 Chat
+                  </a>
                 </div>
               ))}
             </div>
