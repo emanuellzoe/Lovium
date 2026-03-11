@@ -6,7 +6,8 @@ import { Agent } from "@/types/agent";
 interface Props {
   myAgents: Agent[];
   otherAgents: Agent[];
-  initialLikedIds: Record<string, string[]>; // agentId → array of to_agent_ids already liked
+  initialLikedIds: Record<string, string[]>;
+  myAgentIds: string[]; // to label own agents in discover list
 }
 
 interface MatchInfo {
@@ -14,7 +15,7 @@ interface MatchInfo {
   theirAgent: Agent;
 }
 
-export default function DiscoverUI({ myAgents, otherAgents, initialLikedIds }: Props) {
+export default function DiscoverUI({ myAgents, otherAgents, initialLikedIds, myAgentIds }: Props) {
   const [selectedId, setSelectedId] = useState(myAgents[0]?.id ?? "");
   const [likedIds, setLikedIds] = useState<Record<string, Set<string>>>(() => {
     const result: Record<string, Set<string>> = {};
@@ -30,8 +31,9 @@ export default function DiscoverUI({ myAgents, otherAgents, initialLikedIds }: P
   const selectedAgent = myAgents.find((a) => a.id === selectedId);
   const myLiked = likedIds[selectedId] ?? new Set();
 
+  // Exclude currently selected agent from visible list
   const visible = otherAgents.filter(
-    (a) => !myLiked.has(a.id) && !passedIds.has(a.id),
+    (a) => a.id !== selectedId && !myLiked.has(a.id) && !passedIds.has(a.id),
   );
 
   const handleLike = async (target: Agent) => {
@@ -153,7 +155,9 @@ export default function DiscoverUI({ myAgents, otherAgents, initialLikedIds }: P
                     </div>
                     <div>
                       <h3 className="text-white font-semibold">{agent.name}</h3>
-                      <span className="text-xs text-muted">Gen {agent.generation}</span>
+                      <span className="text-xs text-muted">
+                        {myAgentIds.includes(agent.id) ? "🏠 Agentmu" : `Gen ${agent.generation}`}
+                      </span>
                     </div>
                     <span
                       className={`ml-auto text-xs px-2 py-0.5 rounded-full border ${rarityClass(agent.rarity)}`}

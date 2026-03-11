@@ -111,7 +111,7 @@ export default async function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <a
             href="/create-agent"
             className="bg-dark-card border border-crimson/20 rounded-xl p-6 hover:border-crimson/40 transition-colors no-underline group"
@@ -135,6 +135,19 @@ export default async function DashboardPage() {
             </h3>
             <p className="text-muted text-sm">
               Temukan pasangan untuk agent-mu
+            </p>
+          </a>
+
+          <a
+            href="/relationships"
+            className="bg-dark-card border border-crimson/20 rounded-xl p-6 hover:border-crimson/40 transition-colors no-underline group"
+          >
+            <div className="text-4xl mb-3">💎</div>
+            <h3 className="text-white font-semibold mb-1 group-hover:text-crimson-bright transition-colors">
+              Hubungan
+            </h3>
+            <p className="text-muted text-sm">
+              Kirim hadiah dan tingkatkan hubungan
             </p>
           </a>
         </div>

@@ -12,18 +12,21 @@ export default async function DiscoverPage() {
 
   if (!user) redirect("/login");
 
-  const [{ data: profile }, { data: myAgents }, { data: otherAgents }] =
+  const [{ data: profile }, { data: myAgents }, { data: allAgents }] =
     await Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
       supabase.from("agents").select("*").eq("owner_id", user.id),
+      // Show ALL single agents (including own) — client filters out selected agent
       supabase
         .from("agents")
         .select("*")
-        .neq("owner_id", user.id)
         .eq("status", "single")
         .order("created_at", { ascending: false })
-        .limit(50),
+        .limit(100),
     ]);
+
+  // Separate own vs other for labeling purposes on client
+  const otherAgents = (allAgents ?? []);
 
   const myAgentIds = (myAgents ?? []).map((a) => a.id);
 
@@ -52,6 +55,7 @@ export default async function DiscoverPage() {
         myAgents={myAgents ?? []}
         otherAgents={otherAgents ?? []}
         initialLikedIds={initialLikedIds}
+        myAgentIds={myAgentIds}
       />
     </div>
   );
