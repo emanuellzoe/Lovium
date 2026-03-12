@@ -112,13 +112,6 @@ body::before {
   50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
 }
 
-/* Serif font scaling — Cormorant Garamond terlihat lebih kecil secara visual */
-/* Naikkan 40% agar seimbang dengan Outfit (sans-serif) */
-.font-serif {
-  font-size: 1.4em;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-}
 
 /* Mobile-first responsive adjustments */
 @media (max-width: 640px) {

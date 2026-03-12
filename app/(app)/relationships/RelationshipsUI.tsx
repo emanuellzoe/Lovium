@@ -217,7 +217,13 @@ export default function RelationshipsUI({ relationships, initialBalance }: Props
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
+                  <a
+                    href={`/date/${rel.id}`}
+                    className="flex-1 text-center text-xs py-1.5 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/20 hover:border-pink-500/40 transition-colors no-underline"
+                  >
+                    🎭 Kencan
+                  </a>
                   <a
                     href={`/chat/${rel.agent_a_id}`}
                     className="flex-1 text-center text-xs py-1.5 rounded-lg bg-crimson/10 hover:bg-crimson/20 text-crimson-bright border border-crimson/20 hover:border-crimson/40 transition-colors no-underline"
@@ -229,7 +235,7 @@ export default function RelationshipsUI({ relationships, initialBalance }: Props
                       onClick={() => setExpanded(isOpen ? null : rel.id)}
                       className="flex-1 text-xs py-1.5 rounded-lg bg-gold/10 hover:bg-gold/20 text-gold border border-gold/20 hover:border-gold/40 transition-colors"
                     >
-                      🎁 Kirim Gift
+                      🎁 Gift
                     </button>
                   )}
                   {isMax && (
