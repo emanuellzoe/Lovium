@@ -41,7 +41,7 @@ const PACKAGES = [
 ];
 
 export default function TopupPage() {
-  const [profile, setProfile] = useState<{ diamond_balance: number; username?: string } | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionKey, setActionKey] = useState<string | null>(null);
   const [error, setError] = useState("");
