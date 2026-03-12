@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import AppHeader from "@/components/AppHeader";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import type { Profile } from "@/types/user";
 import type { Agent } from "@/types/agent";
 
@@ -28,6 +29,11 @@ const RARITY_STYLE: Record<string, string> = {
   common: "bg-white/5 text-gray-400 border border-white/10",
 };
 
+type ModalState =
+  | { type: "buy"; listingId: string; price: number; agentName: string }
+  | { type: "delist"; listingId: string; agentName: string }
+  | null;
+
 export default function MarketplacePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -38,8 +44,8 @@ export default function MarketplacePage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [modal, setModal] = useState<ModalState>(null);
 
-  // Sell modal state
   const [sellAgent, setSellAgent] = useState<Agent | null>(null);
   const [sellPrice, setSellPrice] = useState("");
 
@@ -63,8 +69,8 @@ export default function MarketplacePage() {
 
   useEffect(() => { load(); }, [load]);
 
-  async function handleBuy(listingId: string, price: number) {
-    if (!confirm(`Beli agent ini seharga ${price} 💎?`)) return;
+  async function executeBuy(listingId: string, price: number) {
+    setModal(null);
     setActionLoading(listingId);
     setError(""); setSuccess("");
     const res = await fetch("/api/marketplace/buy", {
@@ -80,8 +86,8 @@ export default function MarketplacePage() {
     setActionLoading(null);
   }
 
-  async function handleDelist(listingId: string) {
-    if (!confirm("Batalkan listing ini?")) return;
+  async function executeDelist(listingId: string) {
+    setModal(null);
     setActionLoading(listingId);
     setError(""); setSuccess("");
     const res = await fetch("/api/marketplace/delist", {
@@ -130,6 +136,32 @@ export default function MarketplacePage() {
     <div className="min-h-screen bg-dark">
       <AppHeader profile={profile} />
 
+      {/* Confirm Modal */}
+      {modal?.type === "buy" && (
+        <ConfirmModal
+          open
+          title="Konfirmasi Pembelian"
+          message={`Beli agent "${modal.agentName}" seharga 💎 ${modal.price.toLocaleString()} Diamond?`}
+          confirmLabel="Beli Sekarang"
+          cancelLabel="Batal"
+          variant="default"
+          onConfirm={() => executeBuy(modal.listingId, modal.price)}
+          onCancel={() => setModal(null)}
+        />
+      )}
+      {modal?.type === "delist" && (
+        <ConfirmModal
+          open
+          title="Batalkan Listing"
+          message={`Yakin ingin menarik "${modal.agentName}" dari marketplace? Listing akan dibatalkan.`}
+          confirmLabel="Ya, Batalkan"
+          cancelLabel="Tidak"
+          variant="danger"
+          onConfirm={() => executeDelist(modal.listingId)}
+          onCancel={() => setModal(null)}
+        />
+      )}
+
       <main className="section-inner py-10 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -137,7 +169,7 @@ export default function MarketplacePage() {
             <p className="text-muted text-sm">Beli & jual agent AI dengan Diamond</p>
           </div>
           <a href="/topup" className="text-xs bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 px-3 py-1.5 rounded-lg hover:bg-yellow-500/20 transition-colors no-underline">
-            💎 Top Up
+            💎 Isi Diamond
           </a>
         </div>
 
@@ -147,22 +179,21 @@ export default function MarketplacePage() {
             { key: "browse", label: `Semua (${otherListings.length})` },
             { key: "sell", label: "Jual Agentku" },
             { key: "my", label: `Listingku (${myListings.length})` },
-          ].map((t) => (
+          ].map((tb) => (
             <button
-              key={t.key}
-              onClick={() => setTab(t.key as typeof tab)}
+              key={tb.key}
+              onClick={() => setTab(tb.key as typeof tab)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                tab === t.key
+                tab === tb.key
                   ? "bg-crimson/10 border border-crimson text-white"
                   : "bg-dark-card border border-crimson/10 text-muted hover:border-crimson/30"
               }`}
             >
-              {t.label}
+              {tb.label}
             </button>
           ))}
         </div>
 
-        {/* Alert */}
         {error && (
           <div className="bg-crimson/10 border border-crimson/30 rounded-lg px-4 py-3 mb-6 text-sm text-crimson-bright">{error}</div>
         )}
@@ -172,98 +203,92 @@ export default function MarketplacePage() {
 
         {/* Tab: Browse */}
         {tab === "browse" && (
-          <>
-            {otherListings.length === 0 ? (
-              <div className="text-center py-20 text-muted text-sm">Belum ada listing aktif dari pengguna lain.</div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {otherListings.map((listing) => (
-                  <AgentCard
-                    key={listing.id}
-                    listing={listing}
-                    isMine={false}
-                    loading={actionLoading === listing.id}
-                    onBuy={() => handleBuy(listing.id, listing.price_diamond)}
-                  />
-                ))}
-              </div>
-            )}
-          </>
+          otherListings.length === 0 ? (
+            <div className="text-center py-20 text-muted text-sm">Belum ada listing aktif dari pengguna lain.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {otherListings.map((listing) => (
+                <AgentCard
+                  key={listing.id}
+                  listing={listing}
+                  isMine={false}
+                  loading={actionLoading === listing.id}
+                  onBuy={() => setModal({ type: "buy", listingId: listing.id, price: listing.price_diamond, agentName: listing.agent.name })}
+                />
+              ))}
+            </div>
+          )
         )}
 
         {/* Tab: Sell */}
         {tab === "sell" && (
-          <>
-            {myAgents.length === 0 ? (
-              <div className="text-center py-20 text-muted text-sm">
-                Tidak ada agent yang bisa dijual.{" "}
-                <a href="/create-agent" className="text-crimson-bright hover:underline no-underline">Buat agent baru?</a>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {myAgents.map((agent) => (
-                  <div key={agent.id} className="bg-dark-card border border-crimson/20 rounded-xl p-5">
-                    <AgentInfo agent={agent} />
-                    {sellAgent?.id === agent.id ? (
-                      <div className="mt-4 space-y-2">
-                        <input
-                          type="number"
-                          min="1"
-                          placeholder="Harga dalam Diamond"
-                          value={sellPrice}
-                          onChange={(e) => setSellPrice(e.target.value)}
-                          className="w-full bg-dark border border-crimson/20 rounded-lg px-3 py-2 text-white text-sm focus:border-crimson/50 focus:outline-none"
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={handleSell}
-                            disabled={actionLoading === "sell"}
-                            className="flex-1 py-2 rounded-lg bg-crimson/20 hover:bg-crimson/30 text-white text-xs font-medium border border-crimson/30 transition-colors disabled:opacity-50"
-                          >
-                            {actionLoading === "sell" ? "Mendaftar..." : "Konfirmasi Jual"}
-                          </button>
-                          <button
-                            onClick={() => { setSellAgent(null); setSellPrice(""); }}
-                            className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-muted text-xs border border-white/10 transition-colors"
-                          >
-                            Batal
-                          </button>
-                        </div>
+          myAgents.length === 0 ? (
+            <div className="text-center py-20 text-muted text-sm">
+              Tidak ada agent yang bisa dijual.{" "}
+              <a href="/create-agent" className="text-crimson-bright hover:underline no-underline">Buat agent baru?</a>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {myAgents.map((agent) => (
+                <div key={agent.id} className="bg-dark-card border border-crimson/20 rounded-xl p-5">
+                  <AgentInfo agent={agent} />
+                  {sellAgent?.id === agent.id ? (
+                    <div className="mt-4 space-y-2">
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="Harga dalam Diamond"
+                        value={sellPrice}
+                        onChange={(e) => setSellPrice(e.target.value)}
+                        className="w-full bg-dark border border-crimson/20 rounded-lg px-3 py-2 text-white text-sm focus:border-crimson/50 focus:outline-none"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleSell}
+                          disabled={actionLoading === "sell"}
+                          className="flex-1 py-2 rounded-lg bg-crimson/20 hover:bg-crimson/30 text-white text-xs font-medium border border-crimson/30 transition-colors disabled:opacity-50"
+                        >
+                          {actionLoading === "sell" ? "Mendaftar..." : "Konfirmasi Jual"}
+                        </button>
+                        <button
+                          onClick={() => { setSellAgent(null); setSellPrice(""); }}
+                          className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-muted text-xs border border-white/10 transition-colors"
+                        >
+                          Batal
+                        </button>
                       </div>
-                    ) : (
-                      <button
-                        onClick={() => { setSellAgent(agent); setSellPrice(""); setError(""); }}
-                        className="mt-4 w-full py-2 rounded-lg bg-dark border border-crimson/20 hover:border-crimson/40 text-crimson-bright text-xs font-medium transition-colors"
-                      >
-                        Jual Agent Ini
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => { setSellAgent(agent); setSellPrice(""); setError(""); }}
+                      className="mt-4 w-full py-2 rounded-lg bg-dark border border-crimson/20 hover:border-crimson/40 text-crimson-bright text-xs font-medium transition-colors"
+                    >
+                      Jual Agent Ini
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )
         )}
 
         {/* Tab: My Listings */}
         {tab === "my" && (
-          <>
-            {myListings.length === 0 ? (
-              <div className="text-center py-20 text-muted text-sm">Kamu belum punya listing aktif.</div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {myListings.map((listing) => (
-                  <AgentCard
-                    key={listing.id}
-                    listing={listing}
-                    isMine={true}
-                    loading={actionLoading === listing.id}
-                    onDelist={() => handleDelist(listing.id)}
-                  />
-                ))}
-              </div>
-            )}
-          </>
+          myListings.length === 0 ? (
+            <div className="text-center py-20 text-muted text-sm">Kamu belum punya listing aktif.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {myListings.map((listing) => (
+                <AgentCard
+                  key={listing.id}
+                  listing={listing}
+                  isMine={true}
+                  loading={actionLoading === listing.id}
+                  onDelist={() => setModal({ type: "delist", listingId: listing.id, agentName: listing.agent.name })}
+                />
+              ))}
+            </div>
+          )
         )}
       </main>
     </div>
@@ -297,11 +322,7 @@ function AgentInfo({ agent }: { agent: Agent }) {
 }
 
 function AgentCard({
-  listing,
-  isMine,
-  loading,
-  onBuy,
-  onDelist,
+  listing, isMine, loading, onBuy, onDelist,
 }: {
   listing: Listing;
   isMine: boolean;
