@@ -23,9 +23,12 @@ export default function AppHeader({ profile }: AppHeaderProps) {
         <a href="/couple" className="text-xs text-muted hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors no-underline">
           Nikah
         </a>
+        <a href="/marketplace" className="text-xs text-muted hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors no-underline">
+          Marketplace
+        </a>
       </nav>
       <div className="flex items-center gap-4">
-        <a href="/relationships" className="flex items-center gap-1.5 text-gold text-sm font-medium hover:opacity-80 transition-opacity no-underline">
+        <a href="/topup" className="flex items-center gap-1.5 text-gold text-sm font-medium hover:opacity-80 transition-opacity no-underline">
           💎 {profile?.diamond_balance ?? 0}
         </a>
         <span className="text-sm text-muted">

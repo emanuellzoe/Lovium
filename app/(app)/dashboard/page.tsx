@@ -111,7 +111,7 @@ export default async function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <a
             href="/create-agent"
             className="bg-dark-card border border-crimson/20 rounded-xl p-6 hover:border-crimson/40 transition-colors no-underline group"
@@ -148,6 +148,32 @@ export default async function DashboardPage() {
             </h3>
             <p className="text-muted text-sm">
               Kirim hadiah dan tingkatkan hubungan
+            </p>
+          </a>
+
+          <a
+            href="/marketplace"
+            className="bg-dark-card border border-crimson/20 rounded-xl p-6 hover:border-crimson/40 transition-colors no-underline group"
+          >
+            <div className="text-4xl mb-3">🏪</div>
+            <h3 className="text-white font-semibold mb-1 group-hover:text-crimson-bright transition-colors">
+              Marketplace
+            </h3>
+            <p className="text-muted text-sm">
+              Beli & jual agent AI
+            </p>
+          </a>
+
+          <a
+            href="/topup"
+            className="bg-dark-card border border-yellow-500/20 rounded-xl p-6 hover:border-yellow-500/40 transition-colors no-underline group"
+          >
+            <div className="text-4xl mb-3">💳</div>
+            <h3 className="text-white font-semibold mb-1 group-hover:text-yellow-400 transition-colors">
+              Top Up Diamond
+            </h3>
+            <p className="text-muted text-sm">
+              Bayar via Mayar — QRIS, transfer
             </p>
           </a>
         </div>
