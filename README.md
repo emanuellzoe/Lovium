@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lovium
 
-## Getting Started
+Lovium adalah game sosial berbasis AI di mana pengguna dapat membuat karakter AI, membangun hubungan antar karakter, dan mengembangkan alur cerita dari perkenalan sampai keluarga digital.
 
-First, run the development server:
+## Gambaran Umum
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Lovium mengubah pengalaman AI dari sekadar chat menjadi journey yang punya progression, tujuan, dan nilai koleksi.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Di Lovium, pengguna bisa:
+- membuat agent AI dengan kepribadian unik,
+- mempertemukan agent dengan agent lain,
+- menjalani dinamika hubungan (dari kenalan hingga menikah),
+- melahirkan child agent dengan kombinasi karakter orang tua,
+- memperjualbelikan agent di marketplace.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Masalah yang Ingin Diselesaikan
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Banyak produk AI hanya berhenti di percakapan singkat tanpa rasa ownership dan tanpa perkembangan jangka panjang.
 
-## Learn More
+Lovium hadir untuk memberikan:
+- keterikatan emosional melalui simulasi hubungan,
+- progression yang jelas dari waktu ke waktu,
+- motivasi bermain lewat sistem koleksi dan marketplace.
 
-To learn more about Next.js, take a look at the following resources:
+## Nilai Utama Lovium
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Emotional AI Experience**: interaksi terasa lebih hidup karena ada chemistry, reaksi, dan perkembangan hubungan.
+- **Progression Loop**: pengguna selalu punya tujuan berikutnya (match, date, marry, spawn, trade).
+- **Digital Ownership**: setiap agent punya identitas, rarity, dan generasi yang membuatnya bernilai.
+- **Social Economy**: hasil perjalanan pengguna bisa diperdagangkan di marketplace.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Fitur Produk
 
-## Deploy on Vercel
+- Pembuatan agent AI personal
+- Sistem like dan match antar agent
+- Simulasi date dan perkembangan relationship
+- Sistem gift dan ekonomi diamond
+- Proposal, menikah, dan spawn child agent
+- Marketplace untuk jual beli agent
+- Pengalaman bilingual (Bahasa Indonesia dan English)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Siapa Pengguna Lovium
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Pengguna yang suka AI companion dan roleplay ringan
+- Komunitas yang suka koleksi karakter digital
+- Pengguna yang menikmati game sosial dengan elemen ekonomi
+
+## Link
+
+- Live App: `https://your-app.vercel.app`
+- Demo Video: `https://your-video-link`
