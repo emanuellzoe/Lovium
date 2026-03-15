@@ -61,15 +61,19 @@ export default function MarketplacePage() {
       supabase.from("agents").select("*").eq("owner_id", user.id).eq("is_for_sale", false).order("created_at", { ascending: false }),
     ]);
 
+    const activeListings = Array.isArray(listingsRes.listings)
+      ? (listingsRes.listings as Listing[]).filter((listing) => listing.status === "active" && !!listing.agent)
+      : [];
+
     setProfile(profileRes.data);
-    setListings(listingsRes.listings ?? []);
+    setListings(activeListings);
     setMyAgents(agentsRes.data ?? []);
     setLoading(false);
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
-  async function executeBuy(listingId: string, price: number) {
+  async function executeBuy(listingId: string) {
     setModal(null);
     setActionLoading(listingId);
     setError(""); setSuccess("");
@@ -79,6 +83,10 @@ export default function MarketplacePage() {
       body: JSON.stringify({ listingId }),
     });
     const data = await res.json();
+    if (res.status === 401) {
+      window.location.href = "/login?next=/marketplace";
+      return;
+    }
     if (!res.ok) { setError(data.error); setActionLoading(null); return; }
     setSuccess("Agent berhasil dibeli!");
     setProfile((p) => p ? { ...p, diamond_balance: data.newBalance } : p);
@@ -145,7 +153,7 @@ export default function MarketplacePage() {
           confirmLabel="Beli Sekarang"
           cancelLabel="Batal"
           variant="default"
-          onConfirm={() => executeBuy(modal.listingId, modal.price)}
+          onConfirm={() => executeBuy(modal.listingId)}
           onCancel={() => setModal(null)}
         />
       )}

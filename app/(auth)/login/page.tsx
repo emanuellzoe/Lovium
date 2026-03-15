@@ -5,6 +5,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
+function getSafeNextPath(): string {
+  if (typeof window === "undefined") return "/dashboard";
+  const nextParam = new URLSearchParams(window.location.search).get("next");
+  return nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
+    ? nextParam
+    : "/dashboard";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -29,15 +37,17 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
+    const nextPath = getSafeNextPath();
+    router.push(nextPath);
   }
 
   async function handleGoogleLogin() {
     const supabase = createClient();
+    const nextPath = getSafeNextPath();
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
   }
